@@ -1,4 +1,4 @@
-/*!
+/* !
  * Copyright (c) 2015, Salesforce.com, Inc.
  * All rights reserved.
  *
@@ -28,44 +28,31 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-'use strict';
-/*jshint unused:false */
 
-function Store() {
-}
-exports.Store = Store;
+import * as pubsuffix from './pubsuffix';
 
-// Stores may be synchronous, but are still required to use a
-// Continuation-Passing Style API.  The CookieJar itself will expose a "*Sync"
-// API that converts from synchronous-callbacks to imperative style.
-Store.prototype.synchronous = false;
+// Gives the permutation of all possible domainMatch()es of a given domain. The
+// array is in shortest-to-longest order.  Handy for indexing.
+export const permuteDomain = domain => {
+  const pubSuf = pubsuffix.getPublicSuffix(domain);
 
-Store.prototype.findCookie = function(domain, path, key, cb) {
-  throw new Error('findCookie is not implemented');
-};
+  if (!pubSuf) {
+    return null;
+  }
+  if (pubSuf === domain) {
+    return [ domain ];
+  }
 
-Store.prototype.findCookies = function(domain, path, cb) {
-  throw new Error('findCookies is not implemented');
-};
+  // ".example.com"
+  const prefix = domain.slice(0, -(pubSuf.length + 1));
+  const parts = prefix.split('.').reverse();
+  let cur = pubSuf;
+  const permutations = [ cur ];
 
-Store.prototype.putCookie = function(cookie, cb) {
-  throw new Error('putCookie is not implemented');
-};
+  while (parts.length) {
+    cur = `${parts.shift()}.${cur}`;
+    permutations.push(cur);
+  }
 
-Store.prototype.updateCookie = function(oldCookie, newCookie, cb) {
-  // recommended default implementation:
-  // return this.putCookie(newCookie, cb);
-  throw new Error('updateCookie is not implemented');
-};
-
-Store.prototype.removeCookie = function(domain, path, key, cb) {
-  throw new Error('removeCookie is not implemented');
-};
-
-Store.prototype.removeCookies = function(domain, path, cb) {
-  throw new Error('removeCookies is not implemented');
-};
-
-Store.prototype.getAllCookies = function(cb) {
-  throw new Error('getAllCookies is not implemented (therefore jar cannot be serialized)');
+  return permutations;
 };

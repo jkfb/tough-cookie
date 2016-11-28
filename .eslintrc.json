@@ -1,0 +1,11 @@
+{
+  "extends": "es/2015/server",
+  "rules": {
+    "dot-location": [ 2, "property" ],
+    "linebreak-style": "off",
+    "no-sync": "off"
+  },
+  "parserOptions": {
+        "sourceType": "module"
+    }
+}

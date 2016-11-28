@@ -1,4 +1,4 @@
-[RFC6265](https://tools.ietf.org/html/rfc6265) Cookies and CookieJar for Node.js
+[RFC6265](https://tools.ietf.org/html/rfc6265) Cookies and CookieJar for Node.js and the browser build as a UMD module.
 
 [![npm package](https://nodei.co/npm/tough-cookie.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/tough-cookie/)
 
@@ -21,11 +21,15 @@ cookiejar.getCookies('http://example.com/otherpath',function(err,cookies) {
 });
 ```
 
+# Build
+
+To build the library just run the npm script `build`. The output of the library is a UMD module.
+
 # Installation
 
 It's _so_ easy!
 
-`npm install tough-cookie`
+`npm install tough-cookie` or include it in a `script`-tag in your HTML file.
 
 Why the name?  NPM modules `cookie`, `cookies` and `cookiejar` were already taken.
 

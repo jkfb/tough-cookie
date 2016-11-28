@@ -32,7 +32,7 @@
   ],
   "license": "BSD-3-Clause",
   "name": "tough-cookie",
-  "description": "RFC6265 Cookies and Cookie Jar for node.js",
+  "description": "RFC6265 Cookies and Cookie Jar for node.js and browser",
   "keywords": [
     "HTTP",
     "cookie",
@@ -43,7 +43,7 @@
     "RFC6265",
     "RFC2965"
   ],
-  "version": "2.3.2",
+  "version": "2.4.0",
   "homepage": "https://github.com/salesforce/tough-cookie",
   "repository": {
     "type": "git",
@@ -52,12 +52,12 @@
   "bugs": {
     "url": "https://github.com/salesforce/tough-cookie/issues"
   },
-  "main": "./lib/cookie",
+  "main": "./lib/tough-cookie.js",
   "files": [
     "lib"
   ],
   "scripts": {
-    "suffixup": "curl -o public_suffix_list.dat https://publicsuffix.org/list/public_suffix_list.dat && ./generate-pubsuffix.js",
+    "build": "curl -o public_suffix_list.dat https://publicsuffix.org/list/public_suffix_list.dat && ./generate-pubsuffix.js && gulp && webpack --config webpack.config.js",
     "test": "vows test/*_test.js"
   },
   "engines": {
@@ -65,10 +65,23 @@
   },
   "devDependencies": {
     "async": "^1.4.2",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-transform-es2015-modules-umd": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "eslint": "^3.10.2",
+    "eslint-config-es": "^0.8.8",
+    "eslint-loader": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-run": "^1.7.1",
+    "install": "^0.8.2",
+    "request": "^2.79.0",
     "string.prototype.repeat": "^0.2.0",
-    "vows": "^0.8.1"
+    "vows": "^0.8.1",
+    "webpack": "^2.1.0-beta.27"
   },
   "dependencies": {
-    "punycode": "^1.4.1"
+    "punycode": "^2.0.1"
   }
 }

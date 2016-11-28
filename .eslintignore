@@ -1,0 +1,7 @@
+.git/*
+node_modules/*
+test/*
+lib/*
+src/third/*
+src/pubsuffix.js
+generate-pubsuffix.js
