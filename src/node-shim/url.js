@@ -1,6 +1,6 @@
-// https://github.com/alexgorbatchev/node-browser-builtins/blob/master/builtin/url.js - MIT licenced
+// https://github.com/stagas/node-shim/blob/master/lib/url.js - MIT licenced
 
-import { punycode } from '../third/punycode.es6';
+import punycode from '../third/punycode.es6';
 import { querystring } from './querystring';
 
 // Reference: RFC 3986, RFC 1808, RFC 2396
@@ -51,7 +51,15 @@ const slashedProtocol = {
   'file:': true // eslint-disable-line quote-props
 };
 
-const arrayIndexOf = (searchArray, subject) => searchArray.findIndex(element => element === subject);
+const arrayIndexOf = (searchArray, subject) => {
+  for (let i = 0; i < searchArray.length; i++) {
+    if (searchArray[i] == subject) { // eslint-disable-line
+      return i;
+    }
+  }
+
+  return -1;
+};
 
 const parseHost = host => {
   const out = {};

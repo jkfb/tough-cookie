@@ -39,7 +39,7 @@ export const permuteDomain = domain => {
   if (!pubSuf) {
     return null;
   }
-  if (pubSuf === domain) {
+  if (pubSuf == domain) { // eslint-disable-line
     return [ domain ];
   }
 

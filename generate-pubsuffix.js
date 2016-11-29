@@ -70,7 +70,7 @@ const processList = lines => {
   wStream.write(' *                  DO NOT EDIT!                    *\n');
   wStream.write(' ****************************************************/\n\n');
 
-  wStream.write('import { punycode } from \'./third/punycode.es6\';\n\n');
+  wStream.write('import punycode from \'./third/punycode.es6\';\n\n');
 
   wStream.write('export const getPublicSuffix = ');
   wStream.write(getPublicSuffix.toString()); // eslint-disable-line no-use-before-define
@@ -78,7 +78,7 @@ const processList = lines => {
 
   wStream.write('// The following generated structure is used under the MPL version 2.0\n');
   wStream.write('// See public-suffix.txt for more information\n\n');
-  wStream.write('export const index = Object.freeze(\n');
+  wStream.write('export var index = Object.freeze(\n');
   wStream.write(JSON.stringify(indexObj));
   wStream.write(');\n\n');
   wStream.write('// END of automatically generated file\n');
@@ -95,7 +95,7 @@ const addToIndex = (index, line) => {
   }
   line = prefix + punycode.toASCII(line);
 
-  if (line.substr(0, 1) === '!') {
+  if (line.substr(0, 1) == '!') {
     index[line.substr(1)] = false;
   } else {
     index[line] = true;
@@ -148,7 +148,7 @@ const getPublicSuffix = domain => {
     domain = asciiDomain;
     converted = true;
   }
-  if (indexObj[domain]) {
+  if (index[domain]) {
     return null;
   }
 
@@ -163,16 +163,16 @@ const getPublicSuffix = domain => {
     const partstr = part + suffix;
 
     // star rule matches
-    if (indexObj[starstr]) {
+    if (index[starstr]) {
       suffixLen = i + 1;
 
       // exception rule matches (NB: false, not undefined)
-      if (indexObj[partstr] === false) {
+      if (index[partstr] === false) {
         suffixLen--; // eslint-disable-line no-plusplus
       }
 
     // exact match, not exception
-    } else if (indexObj[partstr]) {
+    } else if (index[partstr]) {
       suffixLen = i + 1;
     }
 
@@ -180,7 +180,7 @@ const getPublicSuffix = domain => {
   }
 
   // *.domain exists (e.g. *.kyoto.jp for domain='kyoto.jp');
-  if (indexObj[`*${suffix}`]) {
+  if (index[`*${suffix}`]) {
     return null;
   }
 

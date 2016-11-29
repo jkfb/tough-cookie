@@ -34,9 +34,9 @@ import { isIP } from './node-shim/net';
 import { MemoryCookieStore } from './memstore';
 import { pathMatch } from './pathMatch';
 import { permuteDomain } from './permuteDomain';
-import { punycode } from './third/punycode.es6';
+import punycode from './third/punycode.es6';
 import { Store } from './store';
-import { urlParse } from './node-shim/url';
+import * as _URL from './node-shim/url';
 
 // eslint-disable-next-line no-control-regex
 const DATE_DELIM = /[\x09\x20-\x2F\x3B-\x40\x5B-\x60\x7B-\x7E]/;
@@ -243,7 +243,7 @@ const formatDate = date => {
 
 // S5.1.2 Canonicalized Host Names
 const canonicalDomain = str => {
-  if (str === null) {
+  if (str == null) { // eslint-disable-line
     return null;
   }
 
@@ -260,7 +260,7 @@ const canonicalDomain = str => {
 
 // S5.1.3 Domain Matching
 const domainMatch = (str, domStr, canonicalize) => {
-  if (str === null || domStr === null) {
+  if (str == null || domStr == null) { // eslint-disable-line
     return null;
   }
 
@@ -652,7 +652,7 @@ const getCookieContext = url => {
     // Silently swallow error
   }
 
-  return urlParse(url);
+  return _URL.parse(url);
 };
 
 const Cookie = function (options = {}) {
@@ -673,8 +673,7 @@ const Cookie = function (options = {}) {
     // eslint-disable-next-line
     enumerable: false, // important for assert.deepEqual checks
     writable: true,
-    // eslint-disable-next-line
-    value: ++Cookie.cookiesCreated
+    value: ++Cookie.cookiesCreated // eslint-disable-line
   });
 };
 
@@ -731,7 +730,7 @@ Cookie.serializableProperties = Object.keys(Cookie.prototype)
 
 Cookie.prototype.inspect = function inspect () {
   const now = Date.now();
-  const hostOnly = this.hostOnly !== null ? this.hostOnly : '?';
+  const hostOnly = this.hostOnly != null ? this.hostOnly : '?'; // eslint-disable-line
   const aAge = this.lastAccessed ? `${now - this.lastAccessed.getTime()}ms` : '?';
   const cAge = this.creation ? `${now - this.creation.getTime()}ms` : '?';
 
@@ -763,7 +762,7 @@ Cookie.prototype.toJSON = function () {
     } else if (prop === 'maxAge') {
       if (this[prop] !== null) {
         // again, intentionally not ===
-        obj[prop] = this[prop] === Infinity || this[prop] === -Infinity ?
+        obj[prop] = this[prop] == Infinity || this[prop] == -Infinity ? // eslint-disable-line
           this[prop].toString() : this[prop];
       }
     } else if (this[prop] !== Cookie.prototype[prop]) {
@@ -783,16 +782,16 @@ Cookie.prototype.validate = function validate () {
     return false;
   }
 
-  if (this.expires !== Infinity && !(this.expires instanceof Date) && !parseDate(this.expires)) {
+  if (this.expires != Infinity && !(this.expires instanceof Date) && !parseDate(this.expires)) { // eslint-disable-line
     return false;
   }
 
-  if (this.maxAge !== null && this.maxAge <= 0) {
+  if (this.maxAge != null && this.maxAge <= 0) { // eslint-disable-line
     // 'Max-Age=' non-zero-digit *DIGIT
     return false;
   }
 
-  if (this.path !== null && !PATH_VALUE.test(this.path)) {
+  if (this.path != null && !PATH_VALUE.test(this.path)) { // eslint-disable-line
     return false;
   }
 
@@ -806,7 +805,7 @@ Cookie.prototype.validate = function validate () {
     const suffix = getPublicSuffix(cdomain);
 
     // it's a public suffix
-    if (suffix === null) {
+    if (suffix == null) { // eslint-disable-line
       return false;
     }
   }
@@ -835,7 +834,7 @@ Cookie.prototype.setMaxAge = function setMaxAge (age) {
 Cookie.prototype.cookieString = function cookieString () {
   let val = this.value;
 
-  if (val === null) {
+  if (val == null) { // eslint-disable-line
     val = '';
   }
 
@@ -850,7 +849,7 @@ Cookie.prototype.cookieString = function cookieString () {
 Cookie.prototype.toString = function toString () {
   let str = this.cookieString();
 
-  if (this.expires !== Infinity) {
+  if (this.expires != Infinity) { // eslint-disable-line
     if (this.expires instanceof Date) {
       str += `; Expires=${formatDate(this.expires)}`;
     } else {
@@ -858,7 +857,7 @@ Cookie.prototype.toString = function toString () {
     }
   }
 
-  if (this.maxAge !== null && this.maxAge !== Infinity) {
+  if (this.maxAge != null && this.maxAge != Infinity) { // eslint-disable-line
     str += `; Max-Age=${this.maxAge}`;
   }
 
@@ -897,18 +896,18 @@ Cookie.prototype.TTL = function TTL (now) {
    * expiration date of the cookie.
    * (Concurs with S5.3 step 3)
    */
-  if (this.maxAge !== null) {
+  if (this.maxAge != null) { // eslint-disable-line
     return this.maxAge <= 0 ? 0 : this.maxAge * 1000;
   }
 
   let expires = this.expires;
 
-  if (expires !== Infinity) {
+  if (expires != Infinity) { // eslint-disable-line
     if (!(expires instanceof Date)) {
       expires = parseDate(expires) || Infinity;
     }
 
-    if (expires === Infinity) {
+    if (expires == Infinity) { // eslint-disable-line
       return Infinity;
     }
 
@@ -921,14 +920,14 @@ Cookie.prototype.TTL = function TTL (now) {
 // expiryTime() replaces the 'expiry-time' parts of S5.3 step 3 (setCookie()
 // elsewhere)
 Cookie.prototype.expiryTime = function expiryTime (now) {
-  if (this.maxAge !== null) {
+  if (this.maxAge != null) { // eslint-disable-line
     const relativeTo = now || this.creation || new Date();
     const age = this.maxAge <= 0 ? -Infinity : this.maxAge * 1000;
 
     return relativeTo.getTime() + age;
   }
 
-  if (this.expires === Infinity) {
+  if (this.expires == Infinity) { // eslint-disable-line
     return Infinity;
   }
 
@@ -940,9 +939,9 @@ Cookie.prototype.expiryTime = function expiryTime (now) {
 Cookie.prototype.expiryDate = function expiryDate (now) {
   const millisec = this.expiryTime(now);
 
-  if (millisec === Infinity) {
+  if (millisec == Infinity) { // eslint-disable-line
     return new Date(MAX_TIME);
-  } else if (millisec === -Infinity) {
+  } else if (millisec == -Infinity) { // eslint-disable-line
     return new Date(MIN_TIME);
   }
 
@@ -951,13 +950,13 @@ Cookie.prototype.expiryDate = function expiryDate (now) {
 
 // This replaces the 'persistent-flag' parts of S5.3 step 3
 Cookie.prototype.isPersistent = function isPersistent () {
-  return this.maxAge !== null || this.expires !== Infinity;
+  return this.maxAge != null || this.expires != Infinity; // eslint-disable-line
 };
 
 // Mostly S5.1.2 and S5.2.3:
 Cookie.prototype.cdomain =
 Cookie.prototype.canonicalizedDomain = function canonicalizedDomain () {
-  if (this.domain === null) {
+  if (this.domain == null) { // eslint-disable-line
     return null;
   }
 
@@ -967,15 +966,15 @@ Cookie.prototype.canonicalizedDomain = function canonicalizedDomain () {
 const CookieJar = function (store, options) {
   if (typeof options === 'boolean') {
     options = { rejectPublicSuffixes: options };
-  } else if (options === null) {
+  } else if (options === undefined || options === null) {
     options = {};
   }
 
-  if (options.rejectPublicSuffixes !== null) {
+  if (options.rejectPublicSuffixes != null) { // eslint-disable-line
     this.rejectPublicSuffixes = options.rejectPublicSuffixes;
   }
 
-  if (options.looseMode !== null) {
+  if (options.looseMode != null) { // eslint-disable-line
     this.enableLooseMode = options.looseMode;
   }
 
@@ -1005,7 +1004,7 @@ CookieJar.prototype.setCookie = function (cookie, url, options, cb) {
   const host = canonicalDomain(context.hostname);
   let loose = this.enableLooseMode;
 
-  if (options.loose !== null) {
+  if (options.loose != null) { // eslint-disable-line
     loose = options.loose;
   }
 
@@ -1033,7 +1032,7 @@ CookieJar.prototype.setCookie = function (cookie, url, options, cb) {
     const suffix = getPublicSuffix(cookie.cdomain());
 
     // e.g. 'com'
-    if (suffix === null) {
+    if (suffix == null) { // eslint-disable-line
       err = new Error('Cookie has domain set to a public suffix');
 
       return cb(options.ignoreError ? null : err);
@@ -1049,7 +1048,7 @@ CookieJar.prototype.setCookie = function (cookie, url, options, cb) {
     }
 
     // don't reset if already set
-    if (cookie.hostOnly === null) {
+    if (cookie.hostOnly == null) { // eslint-disable-line
       cookie.hostOnly = false;
     }
   } else {
@@ -1141,14 +1140,14 @@ CookieJar.prototype.getCookies = function (url, options, cb) {
 
   let secure = options.secure;
 
-  if (secure === null && context.protocol &&
-      (context.protocol === 'https:' || context.protocol === 'wss:')) {
+  if (secure == null && context.protocol && // eslint-disable-line
+      (context.protocol == 'https:' || context.protocol == 'wss:')) { // eslint-disable-line
     secure = true;
   }
 
   let http = options.http;
 
-  if (http === null) {
+  if (http == null) { // eslint-disable-line
     http = true;
   }
 
@@ -1165,7 +1164,7 @@ CookieJar.prototype.getCookies = function (url, options, cb) {
     //   The cookie's host-only-flag is false and the canonicalized
     //   request-host domain-matches the cookie's domain.'
     if (cookie.hostOnly) {
-      if (cookie.domain !== host) {
+      if (cookie.domain != host) { // eslint-disable-line
         return false;
       }
     } else if (!domainMatch(host, cookie.domain, false)) {
