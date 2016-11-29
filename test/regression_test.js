@@ -33,7 +33,7 @@
 var vows = require('vows');
 var assert = require('assert');
 var async = require('async');
-var tough = require('../lib/cookie');
+var tough = require('../lib/tough-cookie');
 var Cookie = tough.Cookie;
 var CookieJar = tough.CookieJar;
 

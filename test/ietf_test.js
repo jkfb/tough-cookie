@@ -35,7 +35,7 @@ var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
 var url = require('url');
-var tough = require('../lib/cookie');
+var tough = require('../lib/tough-cookie');
 var Cookie = tough.Cookie;
 var CookieJar = tough.CookieJar;
 
