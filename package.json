@@ -57,7 +57,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "curl -o public_suffix_list.dat https://publicsuffix.org/list/public_suffix_list.dat && ./generate-pubsuffix.js && gulp && webpack --config webpack.config.js",
+    "suffixup": "curl -o public_suffix_list.dat https://publicsuffix.org/list/public_suffix_list.dat",
+    "build": "gulp && webpack --config webpack.config.js",
     "test": "vows test/*_test.js"
   },
   "engines": {
