@@ -237,8 +237,7 @@ const formatDate = date => {
   minutes = minutes >= 10 ? minutes : `0${minutes}`;
   seconds = seconds >= 10 ? seconds : `0${seconds}`;
 
-  return `${NUM_TO_DAY[date.getUTCDay()]}, ${uDate} ${NUM_TO_MONTH[date.getUTCMonth()]} ${date.getUTCFullYear()}
-    ${hours}:${minutes}:${seconds} GMT`;
+  return `${NUM_TO_DAY[date.getUTCDay()]}, ${uDate} ${NUM_TO_MONTH[date.getUTCMonth()]} ${date.getUTCFullYear()} ${hours}:${minutes}:${seconds} GMT`;
 };
 
 // S5.1.2 Canonicalized Host Names

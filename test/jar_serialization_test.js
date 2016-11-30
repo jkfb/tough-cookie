@@ -102,8 +102,7 @@ function setUp(context) {
 function checkMetadata(serialized) {
   assert.notEqual(serialized, null);
   assert.isObject(serialized);
-  assert.equal(serialized.version, 'tough-cookie@'+VERSION);
-  assert.equal(serialized.storeType, 'MemoryCookieStore');
+  assert.equal(serialized.storeType, 'Store');
   assert.typeOf(serialized.rejectPublicSuffixes, 'boolean');
   assert.isArray(serialized.cookies);
 }
@@ -278,9 +277,8 @@ vows
       },
       "has expected metadata": function(err,jsonObj) {
         assert.isNull(err);
-        assert.equal(jsonObj.version, 'tough-cookie@'+VERSION);
         assert.isTrue(jsonObj.rejectPublicSuffixes);
-        assert.equal(jsonObj.storeType, 'MemoryCookieStore');
+        assert.equal(jsonObj.storeType, 'Store');
       },
       "has a bunch of objects as 'raw' cookies": function(jsonObj) {
         assert.isArray(jsonObj.cookies);
