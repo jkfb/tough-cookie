@@ -1,8 +1,6 @@
 [RFC6265](https://tools.ietf.org/html/rfc6265) Cookies and CookieJar for Node.js and the browser build as a UMD module.
 
-[![npm package](https://nodei.co/npm/tough-cookie.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/tough-cookie/)
-
-[![Build Status](https://travis-ci.org/salesforce/tough-cookie.png?branch=master)](https://travis-ci.org/salesforce/tough-cookie)
+[![Build Status](https://travis-ci.org/jkfb/tough-cookie.svg?branch=es6)](https://travis-ci.org/jkfb/tough-cookie)
 
 # Synopsis
 
